@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Icon } from '@iconify/react';
+import Navigation from '../components/Navigation';
+import axios from 'axios'
 
 import Photoo from '../assets/flower.jpg'
 
@@ -7,13 +9,37 @@ import about_svg from '../assets/vector/about.svg'
 import blog_svg from '../assets/vector/blog.svg'
 import contact_svg from '../assets/vector/contact.svg'
 import portfolio_svg from '../assets/vector/portfolio.svg'
+import { Link } from 'react-router-dom';
 
+function decodeHtmlEntities(encodedString) {
+  const textarea = document.createElement('textarea');
+  encodedString = encodedString.replace(/<[^>]*>/g, '')
+  textarea.innerHTML = encodedString;
+  return textarea.value;
+}
 
 export default function Landing() {
+  const [jsonData, setJsonData] = useState(null);
+  const [isBlogLoading, setIsBlogLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get('https://blog.slimer.dev/wp-json/wp/v2/posts?_fields=id,excerpt,title,link&per_page=3')
+      .then(response => {
+        setJsonData(response.data);
+        console.log(jsonData)
+        setIsBlogLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setIsBlogLoading(false);
+      });
+  }, []);
+
   return (
     <>
       {/* <div className='bg-red-400 md:bg-yellow-400 xl:bg-green-300'>red indicates mobile, yellow indicates tablet (md), green indicates desktop(xl) bg-red-400 md:bg-yellow-400 xl:bg-green-300</div> */}
       <div className="w-screen h-auto bg-gradient-to-r from-[#E8FFD6] via-[#FAFCCA] to-[#D1FFB5] p-4 md:p-16 flex flex-col items-center gap-y-12">
+        <Navigation />
         <div className="max-w-6xl flex flex-col xl:flex-row gap-x-10 mt-32 xl:my-24 items-center justify-items-center">
           <div className="self-center text-center xl:text-left">
             <h1>你好</h1>
@@ -54,19 +80,24 @@ export default function Landing() {
             <img className='h-2/3' src={contact_svg} />
           </div>
         </div>
-        <div className='flex flex-col items-center max-w-6xl gap-y-8'>
+        <div className='flex flex-col items-center max-w-6xl mt-8'>
           <h1>最新文章</h1>
-          <div className='text-black-text w-screen xl:w-auto'>
-            <div className='bg-white bg-opacity-60 shadow-lg flex flex-col xl:flex-row rounded-xl p-0 xl:p-8 m-8 xl:m-16'>
-              <div className='flex flex-col gap-y-4 p-8 xl:p-0'>
-                <h2 className='text-center xl:text-left'>文章标题</h2>
-                <p className='tracking-wide text-xl text-justify xl:text-left'>有朋自远方来，必先苦其心志，劳其筋骨，饿其体肤，空乏其身，行拂乱其所为，后鞭数十，驱之别院。曰:不亦悦乎！</p>
-                <a className='inner left-0 bottom-0 py-4 font-bold text-primary-text text-xl text-center xl:text-left'>阅读更多</a>
+          {isBlogLoading ? 
+            <div className='bg-white bg-opacity-60 shadow-lg flex flex-col xl:flex-row rounded-xl xl:p-8 m-8 xl:m-8 w-full text-center p-8 text-4xl'><Icon icon="eos-icons:loading" /></div>
+           : jsonData.map((item, index) => 
+            (<div className='text-black-text w-screen xl:w-auto' key={index}>
+              <div className='bg-white bg-opacity-60 shadow-lg flex flex-col xl:flex-row rounded-xl p-0 xl:p-8 m-8 xl:m-8'>
+                <div className='flex flex-col gap-y-4 p-8 xl:p-0'>
+                  <h2 className='text-center xl:text-left text-4xl'>{decodeHtmlEntities(item.title.rendered)}</h2>
+                  <p className='tracking-wide text-lg text-justify xl:text-left'>{decodeHtmlEntities(item.excerpt.rendered)}</p>
+                  <Link to={item.link} className='inner left-0 bottom-0 py-4 font-bold text-primary-text text-xl text-center xl:text-left'>阅读更多</Link>
+                  {/* <a className='inner left-0 bottom-0 py-4 font-bold text-primary-text text-xl text-center xl:text-left'>阅读更多</a> */}
+                </div>
+                {/* <img src={Photoo} className='bg-fixed rounded-xl w-auto xl:w-full xl:mx-6' /> */}
               </div>
-              <img src={Photoo} className='bg-fixed rounded-xl w-auto xl:w-full xl:mx-6' />
-            </div>
+            </div>)
+          )}
 
-          </div>
           <a className='bg-green-800 px-8 py-4 text-2xl self-center rounded-lg text-white font-bold'>阅读更多文章</a>
         </div>
         <hr className='w-full border-black max-w-7xl' />
