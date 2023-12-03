@@ -22,9 +22,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />}/>
         <Route path="/about" element={<About />}/>
-        {/* <Route path="/portfolio" element={<Portfolio />}/> */}
+        <Route path="/portfolio" element={<Portfolio />}/>
         <Route path="/blog" element={<Blog />}/>
-        {/* <Route path="/contact" element={<Contact />}/> */}
+        <Route path="/contact" element={<Contact />}/>
       </Routes>
     </BrowserRouter>
   )

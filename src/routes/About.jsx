@@ -5,10 +5,9 @@ import Footer from "../components/Footer";
 export default function About() {
   return (
     <>
-
       <div className="w-screen h-auto bg-gradient-to-br from-[#d0ffdc] via-[#feffe0] to-[#ecffdf] p-4 md:p-16 flex flex-col items-center gap-y-12">
         <Navigation />
-        <article className="prose lg:prose-xl prose-headings:text-center  prose-h1:text-6xl prose-h1:text-primary-text prose-h1:font-bold prose-h2:text-primary-text prose-h2:font-bold prose-h2:text-3xl">
+        <article className="prose mt-32 lg:prose-xl prose-headings:text-center  prose-h1:text-6xl prose-h1:text-primary-text prose-h1:font-bold prose-h2:text-primary-text prose-h2:font-bold prose-h2:text-3xl">
           <h1 className="mt-32">欢迎来到我的世界！</h1>
           <p>👋 嘿！ 我是韦杉，不过你可以叫我Slimer。 目前，我是马来西亚一所中学的一名专心学生，对编码、音乐和摄影充满热情。</p>
           <div>

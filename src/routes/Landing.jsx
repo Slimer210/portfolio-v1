@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import axios from 'axios'
 import moment from 'moment';
 
-import HeadPhoto from '../assets/head.jpg'
+import HeadPhoto from '../assets/images/head.jpg'
 
 import about_svg from '../assets/vector/about.svg'
 import blog_svg from '../assets/vector/blog.svg'
@@ -41,7 +41,6 @@ export default function Landing() {
 
   return (
     <>
-      {/* <div className='bg-red-400 md:bg-yellow-400 xl:bg-green-300'>red indicates mobile, yellow indicates tablet (md), green indicates desktop(xl) bg-red-400 md:bg-yellow-400 xl:bg-green-300</div> */}
       <div className="w-screen h-auto bg-gradient-to-br from-[#d0ffdc] via-[#feffe0] to-[#ecffdf] p-4 md:p-16 flex flex-col items-center gap-y-12">
         <Navigation className="z-50"/>
         <div className="max-w-6xl flex flex-col-reverse md:flex-row gap-x-20 gap-y-10 mt-32 md:my-24 items-center justify-items-center">
@@ -85,7 +84,7 @@ export default function Landing() {
           </Link>
         </div>
         <div className='flex flex-col items-center max-w-6xl mt-8'>
-          <h1 className='text-5xl md:text-7xl'>最新文章</h1>
+          <h1 className='text-5xl md:text-7xl'>最新<Link to="/blog" className='text-primary-text'>文章</Link></h1>
           {isBlogLoading ? 
             <div className='bg-white bg-opacity-40 shadow-lg flex flex-col xl:flex-row rounded-xl xl:p-8 m-8 xl:m-8 w-full text-center items-center justify-center gap-x-4 p-8 text-4xl'><Icon icon="eos-icons:loading" /><span className='text-2xl'>加载中</span></div>
            : jsonData.map((item, index) => 
